@@ -5,12 +5,26 @@ import Button from "../../component/Buttons/Button/Button";
 
 class Shop extends Component {
   renderPrice(product) {
-    if (product.name === "папайя" && product.count % 3 === 0) {
+    if (product.count < 1) {
       return (
-        <div>${product.price * product.count - (product.count / 3) * 5}</div>
+        <div className="noSale">
+          <h1>Недопустимая покупка</h1>
+        </div>
+      );
+    } else if (product.name === "папайя" && product.count % 3 === 0) {
+      return (
+        <div>
+          <div>${product.price * product.count - (product.count / 3) * 5}</div>
+          <Button nameBut="Купить" />
+        </div>
       );
     } else {
-      return <div>${product.price * product.count}</div>;
+      return (
+        <div>
+          <div>${product.price * product.count}</div>
+          <Button nameBut="Купить" />
+        </div>
+      );
     }
   }
 
@@ -24,7 +38,6 @@ class Shop extends Component {
               <div>{product.name}</div>
               <div>{product.count} кг</div>
               {this.renderPrice(product)}
-              <Button nameBut="Купить" />
             </div>
           ))}
         </div>
