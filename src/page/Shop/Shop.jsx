@@ -5,6 +5,8 @@ import Button from "../../component/Buttons/Button/Button";
 
 class Shop extends Component {
   renderPrice(product) {
+    let a = product.price * product.count;
+
     if (product.count < 1) {
       return (
         <div className="noSale">
@@ -14,41 +16,52 @@ class Shop extends Component {
     } else if (product.name === "папайя" && product.count % 3 === 0) {
       return (
         <div>
-          <div>${product.price * product.count - (product.count / 3) * 5}</div>
+          <div>${a - (product.count / 3) * 5}</div>
           <Button nameBut="Купить" />
         </div>
       );
     } else {
       return (
         <div>
-          <div>${product.price * product.count}</div>
+          <div>${a}</div>
           <Button nameBut="Купить" />
         </div>
       );
     }
   }
 
+  allPrice(productsList) {
+    return (
+      <div>
+        {productsList.reduce(
+          (previousValue, product) =>
+            previousValue + product.price * product.count,
+          0
+        )}
+      </div>
+    );
+  }
+
   render() {
     const { productsList } = this.props;
-    if (productsList.length > 0) {
-      return (
-        <div>
-          {productsList.map((product, index) => (
-            <div key={index} className="products">
-              <div>{product.name}</div>
-              <div>{product.count} кг</div>
-              {this.renderPrice(product)}
-            </div>
-          ))}
+    return (
+      <div className="mane">
+        {productsList.map((product, index) => (
+          <div key={index} className="products">
+            <div>{product.name}</div>
+            <div>{product.count} кг</div>
+
+            {this.renderPrice(product)}
+          </div>
+        ))}
+        <div className="allPrice">
+          <h1>Всего:</h1>
+
+          <div>{this.allPrice(productsList)}</div>
+          <Button nameBut="Купить все" />
         </div>
-      );
-    } else {
-      return (
-        <div className="noSale">
-          <h1>Нет покупок</h1>
-        </div>
-      );
-    }
+      </div>
+    );
   }
 }
 
